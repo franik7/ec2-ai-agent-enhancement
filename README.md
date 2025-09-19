@@ -18,7 +18,13 @@ The AI Agent leverages **two tools** within ServiceNow Agent Studio:
 - **Record Operations** – to read incident records and identify associated `instance_id`s if an **Incident number** is provided.  
 - **Script Tools** – to restart EC2 instances by calling the existing remediation logic if `instance_id`v is provided.  
 
-![Scope Screenshot](assets/initial_setup.png)
+📸 AI Agent Description.
+![AI Agent Description](assets/ai_agent.png)
+
+📸 Tools. Record Operation and Script.
+![Record Operation](assets/tool_ri.png)
+
+![Script](assets/tool_script.png)
 
 ---
 
@@ -48,13 +54,15 @@ Key steps to integrate the AI Agent into the existing manual remediation system:
    - Linked both tools to the AI Agent.  
    - Confirmed outputs are structured (booleans, http_status, log_id) for conversational display.  
 
-![Script Tool Screenshot](assets/script_tool.png)
+📸 AI Agent Published.
+![AI Agent Published](assets/ai_agent_published.png)
 
 ---
 
 ## Architecture Diagram
 Enhanced workflow diagram showing both manual and AI-driven paths:
 
+📸 Architecture Diagram.
 ![Architecture Diagram](Diagram.png)
 
 The enhanced architecture combines the existing manual remediation path with the new AI conversational interface.
@@ -77,19 +85,22 @@ Engineer → Chat with Agent → Parse input (`instance_id` or `incident`) → C
 ## Optimization
 **Manual vs AI Agent comparison**
 
-- **Manual**  
-  - Input: `sys_id` (direct record reference)  
-  - Strength: fast when engineer is already in ServiceNow console  
-  - Limitation: requires navigating forms and knowing the exact record  
+- **Manual** 
+- You look up the record by **`sys_id`**
+- Fast if you already have the record open
+- You must click around and know the exact Instance you want to bring up 
 
-- **AI Agent**  
-  - Input: AWS `instance_id` or Incident number  
-  - Strength: conversational, faster during high-volume incidents, reduces clicks, keeps engineers in chat context  
-  - Adds safety: human approval before any remediation  
-  - Error handling: clear default responses for invalid formats (e.g., `i-xxxx…`) or unrecognized incident IDs  
-  - Tooling: combines **Record Operations** + **Script Tool** to cover both incident-based and instance-based remediation  
+- **AI Agent** 
+- You just give it an **`instance_id`** or **incident number** that you get from the Slack message
+- Works in AI Agent chat or Now Assist, no need to open forms
+- Always asks before running a fix to confirm execution
+- Handles bad IDs by directing the user to double-check 
+- Uses two tools:
+  - **Record Operations** → finds the record from the Incident table
+  - **Script Tool** → runs the remediation (e.g., restarts the Instance, logs it)
 
-![Comparison Screenshot](assets/compare.png)
+📸 AI Agent Scenario.
+![AI Agent Scenario](assets/scenario.png)
 
 ---
 
@@ -103,11 +114,12 @@ Engineer → Chat with Agent → Parse input (`instance_id` or `incident`) → C
 
 2. **AI Conversational Remediation**  
    - In AI Agent Studio or chat window:  
-     - Example A: `Restart instance i-09ae69f1cb71f622e`  
-     - Example B: `Help me with incident EC2_INC001234`  
-   - Agent confirms: *“I found instance i-09ae… linked to that record. Do you want me to restart it now?”*  
+     - Example A: `Restart instance i-...`  
+     - Example B: `Help me with incident EC2_INC...`  
+   - Agent confirms: *“I found instance i-… linked to that record. Do you want me to restart it now?”*  
    - Engineer approves  
    - Agent executes remediation, logs attempt, and provides output details (log_id, http_status)  
    - Flow and Slack notifications update as with manual remediation  
 
-![Agent Conversation Screenshot](assets/agent_convo.png)
+📸 AI Agent Flow.
+![AI Agent Flow](assets/full_flow.png)
