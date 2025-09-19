@@ -89,10 +89,12 @@ Engineer → Chat with Agent → Parse input (`instance_id` or `incident`) → C
 - **Manual** 
 - You look up the record by **`sys_id`**
 - Fast if you already have the record open
-- You must click around and know the exact Instance you want to bring up 
+- You must click around and know the exact Instance you want to bring up
+- Limited customizations and enhancements available
 
 - **AI Agent** 
 - You just give it an **`instance_id`** or **incident number** that you get from the Slack message
+- Further customizations and enhancements available such as embedding the AI Agent access link into Slack message
 - Works in AI Agent chat or Now Assist, no need to open forms
 - Always asks before running a fix to confirm execution
 - Handles bad IDs by directing the user to double-check 
