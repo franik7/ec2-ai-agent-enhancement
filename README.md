@@ -16,7 +16,7 @@ Netflix’s DevOps team now has **two remediation paths**:
 
 The AI Agent leverages **two tools** within ServiceNow Agent Studio:  
 - **Record Operations** – to read incident records and identify associated `instance_id`s if an **Incident number** is provided.  
-- **Script Tools** – to restart EC2 instances by calling the existing remediation logic if `instance_id`v is provided.  
+- **Script Tools** – to restart EC2 instances by calling the existing remediation logic if `instance_id` is provided.  
 
 📸 AI Agent Description.
 ![AI Agent Description](assets/ai_agent.png)
