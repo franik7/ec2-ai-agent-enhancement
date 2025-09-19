@@ -14,6 +14,10 @@ Netflix’s DevOps team now has **two remediation paths**:
   - Logs every attempt to the **Remediation Log table** for auditability  
   - Provides default error handling if the input is malformed or the record cannot be found  
 
+The AI Agent leverages **two tools** within ServiceNow Agent Studio:  
+- **Record Operations** – to read incident records and identify associated `instance_id`s if an **Incident number** is provided.  
+- **Script Tools** – to restart EC2 instances by calling the existing remediation logic if `instance_id`v is provided.  
+
 ![Scope Screenshot](assets/initial_setup.png)
 
 ---
@@ -35,14 +39,14 @@ Key steps to integrate the AI Agent into the existing manual remediation system:
    - Instructions: parse natural language, extract `instance_id` or incident number, confirm steps with user, escalate errors if invalid  
    - Mode: **Supervised** for human approval  
 
-4. **Script Tool (new)**  
-   - Input: `instance_id`  
-   - Logic: query EC2 Instance table by `instance_id`, call **RemediationHelper** via Connection & Credential Alias, write Remediation Log  
-   - Handles: invalid IDs, duplicate matches, missing connection alias  
+4. **Agent Tools (new)**  
+   - **Record Operations Tool** – lets the agent read incidents and map them to EC2 records.  
+   - **Script Tool (EC2 Remediate by Instance ID)** – input: `instance_id`; logic: query EC2 Instance table, call **RemediationHelper** via Connection & Credential Alias, write Remediation Log.  
+   - Handles: invalid IDs, duplicate matches, missing connection alias.  
 
 5. **Agent Integration**  
-   - Linked the Script Tool to the AI Agent  
-   - Confirmed outputs are structured (booleans, http_status, log_id) for conversational display  
+   - Linked both tools to the AI Agent.  
+   - Confirmed outputs are structured (booleans, http_status, log_id) for conversational display.  
 
 ![Script Tool Screenshot](assets/script_tool.png)
 
@@ -53,11 +57,20 @@ Enhanced workflow diagram showing both manual and AI-driven paths:
 
 ![Architecture Diagram](Diagram.png)
 
+The enhanced architecture combines the existing manual remediation path with the new AI conversational interface.
+
+**Overall Flow:**  
+AWS EC2 → AWS Integration Server → ServiceNow Custom Table → Flow Designer Workflow →  
+AI Agent Conversational Interface + Manual UI Action → AWS Integration Server API
+
 - **Manual Path**  
   Engineer → EC2 Record → UI Action → Script Include → AWS API → Remediation Log → Flow resolves incident → Slack update  
 
-- **AI Path**  
-  Engineer → Chat with Agent → Parse input (instance_id or incident) → Confirm action → Script Tool → Script Include → AWS API → Remediation Log → Flow resolves incident → Slack update  
+**AI Path (detailed):**  
+Engineer → Chat with Agent → Parse input (`instance_id` or `incident`) → Confirm action →  
+- **Record Operations** (find `instance_id` from incident)  
+- **Script Tool** (restart instance, log)  
+→ Script Include → AWS Integration Server API → Remediation Log → Flow resolves incident → Slack update
 
 ---
 
@@ -74,6 +87,7 @@ Enhanced workflow diagram showing both manual and AI-driven paths:
   - Strength: conversational, faster during high-volume incidents, reduces clicks, keeps engineers in chat context  
   - Adds safety: human approval before any remediation  
   - Error handling: clear default responses for invalid formats (e.g., `i-xxxx…`) or unrecognized incident IDs  
+  - Tooling: combines **Record Operations** + **Script Tool** to cover both incident-based and instance-based remediation  
 
 ![Comparison Screenshot](assets/compare.png)
 
