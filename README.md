@@ -53,7 +53,7 @@ Key steps to integrate the AI Agent into the existing manual remediation system:
 
 5. **Agent Integration**  
    - Linked both tools to the AI Agent.  
-   - Confirmed outputs are structured (booleans, http_status, log_id) for conversational display.  
+   - Confirmed outputs are structured for conversational display.  
 
 📸 AI Agent Published.
 ![AI Agent Published](assets/ai_agent_published.png)
