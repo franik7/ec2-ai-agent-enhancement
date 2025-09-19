@@ -21,9 +21,10 @@ The AI Agent leverages **two tools** within ServiceNow Agent Studio:
 📸 AI Agent Description.
 ![AI Agent Description](assets/ai_agent.png)
 
-📸 Tools. Record Operation and Script.
+📸 Tools. Record Operation.
 ![Record Operation](assets/tool_ri.png)
 
+📸 Tools. Script.
 ![Script](assets/tool_script.png)
 
 ---
