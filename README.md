@@ -123,4 +123,4 @@ Engineer → Chat with Agent → Parse input (`instance_id` or `incident`) → C
    - Flow and Slack notifications update as with manual remediation  
 
 📸 AI Agent Flow.
-![AI Agent Flow](assets/full_flow.png)
+![AI Agent Flow](assets/full_flow_min.png)
